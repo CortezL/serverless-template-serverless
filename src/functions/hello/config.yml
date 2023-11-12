@@ -1,0 +1,47 @@
+provider:
+  name: aws
+  apiGateway:
+    shouldStartNameWithService: true
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  endpointType: EDGE
+
+  # O nome da API eh um Atributo obrigatório para o funcionamento da estrutura
+  apiName: api-example
+  moduloName: serverless # Nome do modulo em que esse micro serviço sera adicionado
+  stackName: hello # Esse nome deve ser único para deploys no mesmo modulo, pois eh ele que define o nome da stack criada na AWS, Sugestão utilizar o nome da primeira função criada
+
+  pathHandler: src/functions/hello
+
+custom:
+  serverless-aws-resource-names:
+    source: ./configserverless/mapping.json
+    variables: #Variaveis para serem usadas dentro do mapping.json
+      apiNameMapping: ${self:provider.apiName}
+      stackNameMapping: ${self:provider.stackName}
+      moduloNameMapping: ${self:provider.moduloName}
+
+functions:
+  hello:
+    name: ${self:provider.apiName}-${self:provider.moduloName}-hello
+    memorySize: 128
+    timeout: 10
+    handler: ${self:provider.pathHandler}/handler.hello
+    events:
+      - http:
+          method: get
+          path: hello
+    environment:
+      NODE_PATH: "./:/opt/node_modules"
+    layers:
+      - arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:layer:${file(serverless-env.yml):dependenciesLayer}:latest
+
+package:
+  individually: true
+  excludeDevDependencies: true
+  include:
+    - ${self:provider.pathHandler}/**
+  exclude:
+    - '**'  # Exclui tudo
+    - '!${self:provider.pathHandler}/**'  # Exceto ${self:provider.pathHandler}/**

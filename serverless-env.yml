@@ -1,0 +1,5 @@
+deploymentBucket:
+  serverless-template-services
+
+dependenciesLayer:
+  serverlessTemplateServicesNodeModules

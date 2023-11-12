@@ -1,0 +1,17 @@
+service: ${self:provider.apiName}-${self:provider.moduloName}
+
+frameworkVersion: "3"
+
+deploymentBucket:
+  name: ${file(./serverless-env.yml):deploymentBucket}-functions
+
+# resources:
+#   Resources:
+#     MyS3Bucket:
+#       Type: AWS::S3::Bucket
+#       Properties:
+#         BucketName: ${file(./serverless-env.yml):deploymentBucket}-${self:provider.moduloName}
+
+plugins:
+  - serverless-latest-layer-version
+  - serverless-aws-resource-names

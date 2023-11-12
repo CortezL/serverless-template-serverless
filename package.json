@@ -1,0 +1,26 @@
+{
+    "name": "serverless_init",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "deploy-dependencies": "bash scripts/deployDependencies.sh",
+        "deploy": "node scripts/deployFunction.cjs",
+        "start": "node scripts/startFunctions.cjs"
+    },
+    "type": "module",
+    "author": "Lucas Cortez",
+    "license": "ISC",
+    "devDependencies": {
+        "archiver": "^6.0.1",
+        "child_process": "^1.0.2",
+        "fs": "^0.0.1-security",
+        "fs-extra": "^11.1.1",
+        "js-yaml": "^4.1.0",
+        "serverless-aws-resource-names": "^0.1.2",
+        "serverless-latest-layer-version": "^2.1.2",
+        "serverless-offline": "^13.2.1"
+    },
+    "dependencies": {
+        "axios": "^1.6.1"
+    }
+}

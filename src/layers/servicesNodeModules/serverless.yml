@@ -1,0 +1,27 @@
+service: layer-serverlessTemplateServicesNodeModules
+
+frameworkVersion: "3"
+
+deploymentBucket:
+  name: ${file(../../../serverless-env.yml):deploymentBucket}-layer
+
+# resources:
+#   Resources:
+#     MyS3Bucket:
+#       Type: AWS::S3::Bucket
+#       Properties:
+#         BucketName: ${file(../../../serverless-env.yml):deploymentBucket}-layer
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+
+layers:
+  serverlessTemplateServicesNodeModules:
+    name: serverlessTemplateServicesNodeModules
+    package:
+      artifact: ../../../node_modules.zip
+    compatibleRuntimes:
+      - nodejs18.x
